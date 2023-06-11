@@ -2,71 +2,43 @@ import React from 'react'
 import styles from './page.module.css'
 import Button from '../../../components/Button/Button'
 import Image from 'next/image'
-const Category = ({params}) => {
+import { items } from "./data.js"
+import { notFound } from 'next/navigation'
+
+const getData = (cat) => {
+  const data = items[cat]
+
+  if (data) {
+    return data
+  }
+  return notFound()
+}
+const Category = ({ params }) => {
+  const data = getData(params.category)
   console.log(params)
+  console.log("port",data)
+  
   return (
     <div className={styles.container}>
       <h1 className={styles.catTitle}>{params.category}</h1>
-      <div className={styles.item}>
+
+      {data.map((item)=>(
+      <div className={styles.item} key={item.id}>
         <div className={styles.content}>
-          <h1>Test1a</h1>
-          <p>Desc</p>
-          <Button url="#" text="See More"/>
+          <h1 className={styles.title}>{item.title}</h1>
+          <p className={styles.desc}>{item.desc}</p>
+          <Button url="#" text="See More" />
         </div>
         <div className={styles.imgContainer}>
-          <Image 
-          src="https://plus.unsplash.com/premium_photo-1679619557768-03c2ce276555?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-          fill={true}
-          alt=""
-          className={styles.img}
+          <Image
+            src={item.image}
+            fill={true}
+            alt=""
+            className={styles.img}
           />
         </div>
       </div>
-      <div className={styles.item}>
-        <div className={styles.content}>
-          <h1>Test2</h1>
-          <p>Desc</p>
-          <Button url="#" text="See More"/>
-        </div>
-        <div className={styles.imgContainer}>
-          <Image 
-          src="https://plus.unsplash.com/premium_photo-1679619557768-03c2ce276555?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-          fill={true}
-          alt=""
-          className={styles.img}
-          />
-        </div>
-      </div>
-      <div className={styles.item}>
-        <div className={styles.content}>
-          <h1>Test</h1>
-          <p>Desc</p>
-          <Button url="#" text="See More"/>
-        </div>
-        <div className={styles.imgContainer}>
-          <Image 
-          src="https://plus.unsplash.com/premium_photo-1679619557768-03c2ce276555?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-          fill={true}
-          alt=""
-          className={styles.img}
-          />
-        </div>
-      </div>
-      <div className={styles.item}>
-        <div className={styles.content}>
-          <h1>Test</h1>
-          <p>Desc</p>
-          <Button url="#" text="See More"/>
-        </div>
-        <div className={styles.imgContainer}>
-          <Image 
-          src="https://plus.unsplash.com/premium_photo-1679619557768-03c2ce276555?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-          fill={true}
-          alt=""
-          className={styles.img}
-          />
-        </div>
-      </div>
+      ))}
     </div>
   )
 }

@@ -9,7 +9,7 @@ const DarkModeToggle = () => {
     <div className={styles.container} onClick={toggle}>
         <div className={styles.icon}>🌞</div>
         <div className={styles.icon}>🌛</div>
-        <div className={styles.ball} style={mode === "light" ? {left: "5px"}: {right:"5px"}}/>
+        <div className={styles.ball} style={mode === "light" ? {left: "4px"}: {right:"5px"}}/>
     </div>
   )
 }
