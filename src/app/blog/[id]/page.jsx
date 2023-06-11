@@ -1,12 +1,28 @@
 import React from 'react'
 import styles from './page.module.css'
 import Image from 'next/image'
-const BlogPost  = () => {
+import { notFound } from 'next/navigation'
+
+async function getData(id){
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`,{
+    // next: { revalidate: 10}, for fetching new dat aevery 10sec
+    cache: "no-store",  //for fetching new data on every request 
+  })
+
+  if(!res.ok){
+    return notFound()
+
+  }
+  return res.json()
+}
+const BlogPost  = async({ params }) => {
+  const data = await getData(params.id)
+  console.log("data",data)
   return (
     <div className={styles.container}>
       <div className={styles.top}>
         <div className={styles.info}>
-          <h1 className={styles.title}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque, in rem alias dolor, a cupiditate et itaque error velit totam neque! Reprehenderit ex tempora nam ipsam. Sequi, sunt enim!</h1>
+          <h1 className={styles.title}>{data.title}</h1>
           <p className={styles.desc}>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur obcaecati, consectetur neque totam libero debitis magni dolor eligendi quas, nemo cupiditate error non quia sunt voluptatum ad aspernatur natus ullam?
             Sapiente fuga voluptas iusto molestiae unde ipsum vitae maiores doloribus. Dicta magnam quisquam ipsa recusandae quam ea reprehenderit, tenetur cum earum dolorum. Est dolorum quae sint dignissimos porro eaque perspiciatis!

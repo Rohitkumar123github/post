@@ -24,6 +24,9 @@
 .item:nth-child(2n+1){
     flex-direction: row-reverse;
 }
+.item:nth-child(2n){
+    flex-direction: row;
+}
 .content{
     flex: 1;
     display: flex;
