@@ -3,6 +3,8 @@ import styles from './page.module.css'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
+
+
 async function getData(id){
   const res = await fetch(`http://localhost:3000/api/posts/${id}`,{
     // next: { revalidate: 10}, for fetching new dat aevery 10sec
@@ -15,9 +17,20 @@ async function getData(id){
   }
   return res.json()
 }
+
+export async function generateMetadata({ params }) {
+
+  const post = await getData(params.id)
+
+  return {
+    title: post.title,
+    description: post.desc,
+  }
+}
+
 const BlogPost  = async({ params }) => {
   const data = await getData(params.id)
-  console.log("data",data)
+  console.log("data",params)
   return (
     <div className={styles.container}>
       <div className={styles.top}>
