@@ -1,8 +1,50 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
+import {useRouter} from 'next/navigation'
 import styles from './page.module.css'
+import Link from 'next/link'
 const Register = () => {
+
+  const [err, setErr] = useState(false)
+
+  const router = useRouter()
+
+  const handleSubmit = async(e) =>{
+    e.preventDefault()
+    const name = e.target[0].value
+    const email = e.target[1].value
+    const password = e.target[2].value
+    // console.log("name: ", name)
+    // console.log("email: ", email)
+    // console.log("password: ", password)
+
+    try {
+      const res = await fetch("/api/auth/register",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name, email, password
+        })
+      })
+
+      res.status === 201 && router.push("/dashboard/login?success=Account has been created")
+    } catch (err) {
+      setErr(true)
+    }
+  }
   return (
-    <div>Register</div>
+    <div className={styles.container}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <input type='text' placeholder='usename' className={styles.input} required/>
+        <input type='email' placeholder='email' className={styles.input} required/>
+        <input type='password' placeholder='password' className={styles.input} required/>
+        <button className={styles.button}>Register</button>
+      </form>
+      { err && "something went wrong"}
+      <Link href="/dashboard/login">Login with an existing account</Link>
+    </div>
   )
 }
 
